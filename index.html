@@ -1489,8 +1489,8 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--b
           <div class="tkt-reply-actions">
             <label class="tkt-attach-label" id="tktAttachLabel">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-              Attach screenshot or video
-              <input type="file" accept="image/*,video/*" style="display:none;" id="tktReplyFile" onchange="handleReplyAttach(this)">
+              Attach file
+              <input type="file" accept="image/*,video/*,.msg,.eml,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip" style="display:none;" id="tktReplyFile" onchange="handleReplyAttach(this)">
             </label>
             <div class="tkt-reply-btns">
               <button class="btn btn-primary" id="tktSendBtn" onclick="updateTicket()" style="font-size:12px;padding:6px 18px;">Send</button>
@@ -1619,7 +1619,6 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--b
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           <span>Click or drag files here</span>
           <span style="font-size:11px;color:var(--text-muted);">Images, videos, emails (.msg, .eml), PDFs, documents — max 10 MB each</span>
-          <span style="font-size:11px;color:var(--text-muted);">Screenshots (.png, .jpg, .gif) or Videos (.mp4, .webm) — max 10 MB each</span>
         </div>
         <input type="file" id="ticketFiles" multiple accept="image/*,video/*,.png,.jpg,.jpeg,.gif,.mp4,.webm,.mov,.msg,.eml,.pdf,.doc,.docx,.xls,.xlsx,.txt,.csv,.zip" style="display:none;" onchange="handleFileSelect(event)">
         <div class="file-preview-list" id="filePreviewList"></div>
@@ -5735,10 +5734,14 @@ function handleFileSelect(e){
   addFiles(e.target.files);
 }
 
+const ALLOWED_EXT = /\.(png|jpe?g|gif|svg|webp|bmp|mp4|webm|mov|avi|msg|eml|pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|zip|rar|7z)$/i;
+
 function addFiles(fileList){
   for(const f of fileList){
     if(f.size>MAX_FILE_SIZE){toast(f.name+' exceeds 10 MB limit.','error');continue;}
-    if(!f.type.startsWith('image/')&&!f.type.startsWith('video/')){toast(f.name+' is not an image or video.','error');continue;}
+    const typeOk = f.type.startsWith('image/')||f.type.startsWith('video/')||f.type.startsWith('application/')||f.type.startsWith('text/');
+    const extOk = ALLOWED_EXT.test(f.name);
+    if(!typeOk&&!extOk){toast(f.name+': file type not supported.','error');continue;}
     if(ticketAttachments.some(x=>x.name===f.name&&x.size===f.size)) continue;
     ticketAttachments.push(f);
   }
@@ -5754,9 +5757,12 @@ function renderFilePreviews(){
   const el=document.getElementById('filePreviewList');
   el.innerHTML=ticketAttachments.map((f,i)=>{
     const isVideo=f.type.startsWith('video/');
-    const url=URL.createObjectURL(f);
+    const isImage=f.type.startsWith('image/');
+    const url=(isImage||isVideo)?URL.createObjectURL(f):'';
+    const ext=(f.name.split('.').pop()||'').toUpperCase();
+    const fileIcon=`<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:var(--surface-alt,#F3F4F6);flex-direction:column;gap:2px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span style="font-size:9px;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;">${ext}</span></div>`;
     return `<div class="file-preview-item">
-      ${isVideo?`<video src="${url}" muted></video>`:`<img src="${url}">`}
+      ${isVideo?`<video src="${url}" muted></video>`:isImage?`<img src="${url}">`:fileIcon}
       <button class="fp-remove" onclick="removeAttachment(${i})" title="Remove">&times;</button>
       <div class="fp-name">${esc(f.name)}</div>
     </div>`;
