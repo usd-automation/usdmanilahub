@@ -1655,9 +1655,9 @@ const MSAL_CONFIG = {
   auth: {
     clientId: 'b5a735c9-a18e-4621-9f25-4aa863ccace2',
     authority: 'https://login.microsoftonline.com/42f7676c-f455-423c-82f6-dc2d99791af7',
-    /* Use origin-only redirect so ANY file token URL works with popup auth.
-       'https://static.ekx.cloud.sap' is already registered in Azure AD. */
-    redirectUri: window.location.origin
+    /* redirectUri must match EXACTLY what is registered in Azure AD.
+       GitHub Pages serves from /usdmanilahub/ subpath. */
+    redirectUri: window.location.origin + '/usdmanilahub/'
   },
   cache: { cacheLocation: 'localStorage', storeAuthStateInCookie: true }
 };
