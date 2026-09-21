@@ -71,14 +71,17 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--b
 .toast.info{background:#E3F2FD;color:#1565C0;border:1px solid #BBDEFB;}
 .toast.warning{background:#FFF8E1;color:#E65100;border:1px solid #FFCC80;}
 /* ── App status badge (shown on card image area) ── */
-.app-status-badge{position:absolute;top:8px;right:8px;padding:3px 9px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;backdrop-filter:blur(4px);}
-.app-status-badge.maintenance{background:rgba(230,115,0,0.18);color:#B45309;border:1px solid rgba(230,115,0,0.35);}
-.app-status-badge.deprecated{background:rgba(185,28,28,0.14);color:#B91C1C;border:1px solid rgba(185,28,28,0.28);}
+.app-status-badge{position:absolute;top:8px;right:8px;padding:4px 10px;border-radius:20px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;z-index:2;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,0.18);}
+.app-status-badge.maintenance{background:#F59E0B;color:#FFFFFF;border:1.5px solid #D97706;text-shadow:0 1px 2px rgba(0,0,0,0.2);animation:pulse-badge 2.5s ease-in-out infinite;}
+.app-status-badge.deprecated{background:#DC2626;color:#FFFFFF;border:1.5px solid #B91C1C;text-shadow:0 1px 2px rgba(0,0,0,0.25);}
+@keyframes pulse-badge{0%,100%{box-shadow:0 2px 8px rgba(245,158,11,0.25);}50%{box-shadow:0 2px 16px rgba(245,158,11,0.55);}}
 /* ── Dimming for non-active app cards ── */
-.app-card.status-maintenance{opacity:0.72;filter:saturate(0.65);}
-.app-card.status-maintenance:hover{opacity:0.82;transform:translateY(-3px);}
-.app-card.status-deprecated{opacity:0.45;filter:grayscale(0.55) saturate(0.40);}
-.app-card.status-deprecated:hover{opacity:0.56;transform:translateY(-3px);}
+.app-card.status-maintenance{opacity:0.82;filter:saturate(0.7);}
+.app-card.status-maintenance:hover{opacity:0.92;transform:translateY(-3px);}
+.app-card.status-maintenance .app-card-img::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(245,158,11,0.06) 0px,rgba(245,158,11,0.06) 4px,transparent 4px,transparent 8px);border-radius:12px 12px 0 0;pointer-events:none;}
+.app-card.status-deprecated{opacity:0.55;filter:grayscale(0.5) saturate(0.45);}
+.app-card.status-deprecated:hover{opacity:0.65;transform:translateY(-3px);}
+.app-card.status-deprecated .app-card-img::after{content:'';position:absolute;inset:0;background:rgba(185,28,28,0.10);border-radius:12px 12px 0 0;pointer-events:none;}
 .app-card.status-maintenance .app-card-body,.app-card.status-deprecated .app-card-body{cursor:not-allowed!important;}
 @keyframes toastIn{from{opacity:0;transform:translateX(40px);}to{opacity:1;transform:translateX(0);}}
 
@@ -6178,10 +6181,10 @@ async function setTicketStatus(newStatus){
       const changerName = currentUser ? currentUser.displayName : 'Someone';
       if(actual==='Closed'){
         const emailHTML = buildTicketEmailHTML('Ticket Closed', esc(t.subject), esc(t.application), t.priority, 'Closed', '', 'This ticket has been <strong>closed</strong> by <strong>'+esc(changerName)+'</strong>.');
-        await sendNotificationEmail(recipients, 'APP HUB — Ticket Closed: '+t.subject, emailHTML);
+        await sendNotificationEmail(recipients, 'APP HUB — Ticket Closed: '+t.subject, emailHTML, getAdminEmails());
       } else {
         const emailHTML = buildTicketEmailHTML('Status Updated', esc(t.subject), esc(t.application), t.priority, actual, '', 'Ticket status changed to <strong>'+esc(actual)+'</strong> by <strong>'+esc(changerName)+'</strong>.');
-        await sendNotificationEmail(recipients, 'APP HUB — Status Updated: '+t.subject, emailHTML);
+        await sendNotificationEmail(recipients, 'APP HUB — Status Updated: '+t.subject, emailHTML, getAdminEmails());
       }
     }
   } catch(e){ console.error(e); toast('Error updating status: '+e.message,'error'); }
@@ -6207,7 +6210,7 @@ async function quickCloseTicket(){
     if(recipients.length){
       const closerName = currentUser ? currentUser.displayName : 'Someone';
       const emailHTML = buildTicketEmailHTML('Ticket Closed', esc(t.subject), esc(t.application), t.priority, 'Closed', '', 'This ticket has been <strong>closed</strong> by <strong>'+esc(closerName)+'</strong>.');
-      await sendNotificationEmail(recipients, 'APP HUB — Ticket Closed: '+t.subject, emailHTML);
+      await sendNotificationEmail(recipients, 'APP HUB — Ticket Closed: '+t.subject, emailHTML, getAdminEmails());
     }
   } catch(e){ console.error(e); toast('Error closing ticket: '+e.message,'error'); }
 }
@@ -6296,7 +6299,7 @@ async function updateTicket(){
           !responseEmpty ? esc(response) : '',
           'This ticket has been <strong>closed</strong> by <strong>'+esc(updaterName)+'</strong>.'
         );
-        await sendNotificationEmail(recipients, 'APP HUB — Ticket Closed: '+t.subject, emailHTML);
+        await sendNotificationEmail(recipients, 'APP HUB — Ticket Closed: '+t.subject, emailHTML, getAdminEmails());
       } else {
         const changes = [];
         if(statusChanged) changes.push('Status changed to <strong>'+esc(newStatus)+'</strong>');
@@ -6307,7 +6310,7 @@ async function updateTicket(){
           !responseEmpty ? esc(response) : '',
           changes.join('. ')+'.'
         );
-        await sendNotificationEmail(recipients, 'APP HUB — Ticket Updated: '+t.subject, emailHTML);
+        await sendNotificationEmail(recipients, 'APP HUB — Ticket Updated: '+t.subject, emailHTML, getAdminEmails());
       }
     }
   } catch(e){
