@@ -70,37 +70,27 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--b
 .toast.success{background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;}
 .toast.info{background:#E3F2FD;color:#1565C0;border:1px solid #BBDEFB;}
 .toast.warning{background:#FFF8E1;color:#E65100;border:1px solid #FFCC80;}
-/* ── My Apps & Category Guide panels ── */
-.apps-panel{margin:0 0 18px;border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden;transition:box-shadow 0.2s;}
-.apps-panel:hover{box-shadow:0 2px 12px rgba(0,0,0,0.04);}
-.apps-panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;cursor:pointer;user-select:none;gap:10px;transition:background 0.15s;}
-.apps-panel-header:hover{background:var(--primary-light,#F5F3FF);}
-.apps-panel-header h4{margin:0;font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;}
-.apps-panel-header .panel-count{font-size:11px;font-weight:600;background:var(--primary,#7C5CCC);color:#FFF;padding:1px 8px;border-radius:10px;min-width:18px;text-align:center;}
-.apps-panel-header .panel-chevron{transition:transform 0.25s ease;color:var(--text-muted);font-size:16px;}
-.apps-panel-header .panel-chevron.open{transform:rotate(180deg);}
-.apps-panel-body{display:none;padding:0 18px 16px;animation:panelSlideIn 0.2s ease;}
-.apps-panel-body.open{display:block;}
-@keyframes panelSlideIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
-/* My Apps mini cards */
-.my-app-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;border:1px solid var(--border);margin-bottom:8px;transition:background 0.15s,border-color 0.15s;cursor:pointer;}
-.my-app-row:last-child{margin-bottom:0;}
-.my-app-row:hover{background:var(--primary-light,#F5F3FF);border-color:var(--primary,#7C5CCC);}
-.my-app-row .my-app-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;font-weight:800;color:#FFF;}
-.my-app-row .my-app-info{flex:1;min-width:0;}
-.my-app-row .my-app-name{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.my-app-row .my-app-meta{font-size:11px;color:var(--text-muted);display:flex;gap:8px;align-items:center;margin-top:2px;}
-.my-app-row .my-app-role{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:2px 8px;border-radius:6px;}
-.my-app-role.owner{background:#EDE9FE;color:#6B4DC7;}
-.my-app-role.co-owner{background:#E0F2FE;color:#0369A1;}
-/* Category guide */
-.cat-guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;}
-.cat-guide-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:10px;border:1px solid var(--border);transition:background 0.15s;}
+/* ── Category Info Popover ── */
+.cat-tabs-wrapper{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.cat-tabs-inner{display:flex;gap:8px;flex-wrap:wrap;flex:1;}
+.cat-info-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;flex-shrink:0;color:var(--text-muted);}
+.cat-info-btn:hover{border-color:var(--primary,#7C5CCC);color:var(--primary,#7C5CCC);background:var(--primary-light,#F5F3FF);}
+.cat-info-btn.active{border-color:var(--primary,#7C5CCC);color:var(--primary,#7C5CCC);background:var(--primary-light,#F5F3FF);box-shadow:0 0 0 3px rgba(124,92,204,0.12);}
+.cat-info-popover{position:absolute;top:calc(100% + 8px);right:0;width:420px;max-height:400px;overflow-y:auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.12);z-index:120;padding:16px;display:none;animation:popIn 0.18s ease;}
+.cat-info-popover.show{display:block;}
+@keyframes popIn{from{opacity:0;transform:translateY(-8px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+.cat-info-popover .cg-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.cat-guide-item{display:flex;align-items:flex-start;gap:10px;padding:9px 10px;border-radius:8px;transition:background 0.15s;}
 .cat-guide-item:hover{background:var(--primary-light,#F5F3FF);}
-.cat-guide-item .cg-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.cat-guide-item .cg-icon svg{width:16px;height:16px;stroke:#FFF;}
-.cat-guide-item .cg-label{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;}
-.cat-guide-item .cg-desc{font-size:11px;color:var(--text-muted);line-height:1.45;}
+.cat-guide-item .cg-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cat-guide-item .cg-icon svg{width:14px;height:14px;stroke:#FFF;}
+.cat-guide-item .cg-label{font-size:12px;font-weight:700;color:var(--text);margin-bottom:1px;}
+.cat-guide-item .cg-desc{font-size:11px;color:var(--text-muted);line-height:1.4;}
+/* My Apps tab role badge overlay on app cards */
+.app-card .app-role-badge{display:none;position:absolute;top:8px;left:8px;padding:3px 9px;border-radius:6px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;z-index:2;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,0.15);}
+.app-role-badge.owner{background:#7C5CCC;color:#FFF;}
+.app-role-badge.co-owner{background:#0284C7;color:#FFF;}
+.show-role-badges .app-card .app-role-badge{display:inline-block;}
 /* ── App status badge (shown on card image area) ── */
 .app-status-badge{position:absolute;top:8px;right:8px;padding:4px 10px;border-radius:20px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;z-index:2;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,0.18);}
 .app-status-badge.maintenance{background:#F59E0B;color:#FFFFFF;border:1.5px solid #D97706;text-shadow:0 1px 2px rgba(0,0,0,0.2);animation:pulse-badge 2.5s ease-in-out infinite;}
@@ -1429,33 +1419,13 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--b
           </div>
           <div class="quick-access-row" id="quickAccessRow"></div>
         </div>
-        <div class="category-tabs" id="categoryTabs"></div>
-
-        <!-- My Apps Panel (collapsible) -->
-        <div class="apps-panel" id="myAppsPanel" style="display:none;">
-          <div class="apps-panel-header" onclick="togglePanel('myApps')">
-            <h4>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              My Apps
-              <span class="panel-count" id="myAppsCount">0</span>
-            </h4>
-            <svg class="panel-chevron" id="myAppsChevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-          </div>
-          <div class="apps-panel-body" id="myAppsBody"></div>
+        <div class="cat-tabs-wrapper" style="position:relative;">
+          <div class="cat-tabs-inner" id="categoryTabs"></div>
+          <button class="cat-info-btn" id="catInfoBtn" onclick="toggleCatInfo()" title="Category Guide">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </button>
+          <div class="cat-info-popover" id="catInfoPopover"></div>
         </div>
-
-        <!-- Category Guide Panel (collapsible) -->
-        <div class="apps-panel" id="catGuidePanel">
-          <div class="apps-panel-header" onclick="togglePanel('catGuide')">
-            <h4>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-              Category Guide
-            </h4>
-            <svg class="panel-chevron" id="catGuideChevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-          </div>
-          <div class="apps-panel-body" id="catGuideBody"></div>
-        </div>
-
         <div class="section-header">
           <h3>Applications</h3>
           <span class="section-count" id="appCount">0</span>
@@ -3061,7 +3031,7 @@ function render() {
   renderBanner();
   renderNavBadges();
   document.getElementById('toolbar').style.display = currentView==='apps' ? '' : 'none';
-  if (currentView==='apps') { renderQuickAccess(); renderCategoryTabs(); renderMyAppsPanel(); renderCatGuidePanel(); renderApps(); }
+  if (currentView==='apps') { renderQuickAccess(); renderCategoryTabs(); renderApps(); }
   if (currentView==='support') renderTickets();
 }
 
@@ -4700,12 +4670,28 @@ function renderCategoryTabs() {
   const counts={};
   const visibleApps = spApps.filter(a=>canViewApp(a));
   CATEGORIES.forEach(c=>{counts[c.key]=c.key==='All'?visibleApps.length:visibleApps.filter(a=>a.category===c.key).length;});
-  document.getElementById('categoryTabs').innerHTML = CATEGORIES.map(c=>
+
+  /* Build tabs — inject "My Apps" tab after "All" if user owns apps */
+  const myApps = getMyApps();
+  const showMyApps = myApps.length > 0;
+
+  let tabs = CATEGORIES.map(c =>
     `<button class="cat-tab ${c.key===activeCategory?'active':''}" onclick="setCategory('${c.key}')">${ICONS[c.icon]||''} ${c.label} <span class="tab-count">${counts[c.key]}</span></button>`
-  ).join('');
+  );
+
+  if (showMyApps) {
+    const myAppsTab = `<button class="cat-tab ${'My Apps'===activeCategory?'active':''}" onclick="setCategory('My Apps')" style="${'My Apps'===activeCategory?'':''}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> My Apps <span class="tab-count">${myApps.length}</span></button>`;
+    tabs.splice(1, 0, myAppsTab); /* Insert after "All" */
+  }
+
+  document.getElementById('categoryTabs').innerHTML = tabs.join('');
+
+  /* Toggle role badges on app grid */
+  const grid = document.getElementById('appsGrid');
+  if (grid) grid.classList.toggle('show-role-badges', activeCategory === 'My Apps');
 }
 
-/* ── Category descriptions (used by guide panel) ── */
+/* ── Category descriptions ── */
 const CAT_DESCRIPTIONS = {
   'Productivity Tools': 'Applications that help employees work more efficiently — task managers, office suites, automation tools, and workflow accelerators.',
   'Analytics & Reporting': 'Dashboards, BI tools, and data visualization applications for generating reports, tracking KPIs, and analyzing performance.',
@@ -4717,83 +4703,78 @@ const CAT_DESCRIPTIONS = {
   'Games': 'Recreational or gamified applications — team-building activities, quizzes, and engagement tools.',
 };
 
-/* ── Panel toggle state ── */
-const _panelState = { myApps: false, catGuide: false };
-
-function togglePanel(key) {
-  _panelState[key] = !_panelState[key];
-  const body = document.getElementById(key === 'myApps' ? 'myAppsBody' : 'catGuideBody');
-  const chev = document.getElementById(key === 'myApps' ? 'myAppsChevron' : 'catGuideChevron');
-  if (body) body.classList.toggle('open', _panelState[key]);
-  if (chev) chev.classList.toggle('open', _panelState[key]);
-}
-
-/* ── Render My Apps panel ── */
-function renderMyAppsPanel() {
-  const panel = document.getElementById('myAppsPanel');
-  const body = document.getElementById('myAppsBody');
-  const countEl = document.getElementById('myAppsCount');
-  if (!panel || !body || !currentUser) return;
-
-  const myEmail = (currentUser.email || '').toLowerCase();
-  if (!myEmail) { panel.style.display = 'none'; return; }
-
-  const myApps = spApps.filter(a => {
+/* ── "My Apps" tab logic ── */
+function getMyApps() {
+  const myEmail = (currentUser && currentUser.email || '').toLowerCase();
+  if (!myEmail) return [];
+  return spApps.filter(a => {
     const isOwner = a.primaryOwner && a.primaryOwner.toLowerCase() === myEmail;
     const isCoOwner = a.coOwners && a.coOwners.some(e => e.toLowerCase() === myEmail);
     return isOwner || isCoOwner;
   });
-
-  if (!myApps.length) { panel.style.display = 'none'; return; }
-  panel.style.display = '';
-  if (countEl) countEl.textContent = myApps.length;
-
-  const COLORS = ['#7C5CCC','#E67E22','#27AE60','#2980B9','#8E44AD','#00ACC1','#16A085','#E74C3C'];
-
-  body.innerHTML = myApps.map((a, i) => {
-    const isOwner = a.primaryOwner && a.primaryOwner.toLowerCase() === myEmail;
-    const bgColor = COLORS[i % COLORS.length];
-    const initials = a.name.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
-    const statusTag = a.status && a.status !== 'Active'
-      ? ` <span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;background:${a.status==='Deprecated'?'#FEE2E2;color:#DC2626':'#FEF3C7;color:#D97706'}">${esc(a.status)}</span>`
-      : '';
-    return `<div class="my-app-row" onclick="openApp('${a.spId}')">
-      <div class="my-app-icon" style="background:${bgColor};">${initials}</div>
-      <div class="my-app-info">
-        <div class="my-app-name">${esc(a.name)}${statusTag}</div>
-        <div class="my-app-meta">
-          <span>${esc(a.category)}</span>
-        </div>
-      </div>
-      <span class="my-app-role ${isOwner ? 'owner' : 'co-owner'}">${isOwner ? 'Owner' : 'Co-Owner'}</span>
-    </div>`;
-  }).join('');
 }
 
-/* ── Render Category Guide panel ── */
-function renderCatGuidePanel() {
-  const body = document.getElementById('catGuideBody');
-  if (!body) return;
-  body.innerHTML = '<div class="cat-guide-grid">' + CATEGORIES.filter(c => c.key !== 'All').map(c => {
-    const desc = CAT_DESCRIPTIONS[c.key] || '';
-    const iconSvg = ICONS[c.icon] || '';
-    return `<div class="cat-guide-item">
-      <div class="cg-icon" style="background:${c.color};">${iconSvg}</div>
-      <div>
-        <div class="cg-label">${esc(c.key)}</div>
-        <div class="cg-desc">${esc(desc)}</div>
-      </div>
-    </div>`;
-  }).join('') + '</div>';
+function getMyAppRole(a) {
+  const myEmail = (currentUser && currentUser.email || '').toLowerCase();
+  if (a.primaryOwner && a.primaryOwner.toLowerCase() === myEmail) return 'owner';
+  if (a.coOwners && a.coOwners.some(e => e.toLowerCase() === myEmail)) return 'co-owner';
+  return '';
 }
+
+/* ── Category Info popover ── */
+let _catInfoOpen = false;
+
+function toggleCatInfo() {
+  _catInfoOpen = !_catInfoOpen;
+  const pop = document.getElementById('catInfoPopover');
+  const btn = document.getElementById('catInfoBtn');
+  if (!pop) return;
+  if (_catInfoOpen) {
+    pop.innerHTML = '<div class="cg-title">Category Guide</div>' +
+      CATEGORIES.filter(c => c.key !== 'All' && c.key !== 'My Apps').map(c => {
+        const desc = CAT_DESCRIPTIONS[c.key] || '';
+        const iconSvg = ICONS[c.icon] || '';
+        return `<div class="cat-guide-item">
+          <div class="cg-icon" style="background:${c.color};">${iconSvg}</div>
+          <div>
+            <div class="cg-label">${esc(c.key)}</div>
+            <div class="cg-desc">${esc(desc)}</div>
+          </div>
+        </div>`;
+      }).join('');
+    pop.classList.add('show');
+    if (btn) btn.classList.add('active');
+  } else {
+    pop.classList.remove('show');
+    if (btn) btn.classList.remove('active');
+  }
+}
+
+/* Close popover on outside click */
+document.addEventListener('click', function(e) {
+  if (_catInfoOpen && !e.target.closest('.cat-info-btn') && !e.target.closest('.cat-info-popover')) {
+    _catInfoOpen = false;
+    const pop = document.getElementById('catInfoPopover');
+    const btn = document.getElementById('catInfoBtn');
+    if (pop) pop.classList.remove('show');
+    if (btn) btn.classList.remove('active');
+  }
+});
 
 function renderApps() {
   const q = document.getElementById('searchInput').value.toLowerCase();
   let list = spApps;
-  if (activeCategory!=='All') list=list.filter(a=>a.category===activeCategory);
+
+  /* Handle "My Apps" special tab */
+  const isMyApps = activeCategory === 'My Apps';
+  if (isMyApps) {
+    list = getMyApps();
+  } else {
+    if (activeCategory!=='All') list=list.filter(a=>a.category===activeCategory);
+  }
   if (q) list=list.filter(a=>a.name.toLowerCase().includes(q)||a.desc.toLowerCase().includes(q));
   /* Audience filter — hide apps the current user shouldn't see */
-  list=list.filter(a=>canViewApp(a));
+  if (!isMyApps) list=list.filter(a=>canViewApp(a));
 
   const grid=document.getElementById('appsGrid');
   const empty=document.getElementById('appsEmpty');
@@ -4837,6 +4818,8 @@ function renderAppCard(a){
   const showActions=canManageApp(a);
   const statusCls=(a.status||'Active').toLowerCase();
   const imgSrc = a._resolvedImageUrl || (a.imageUrl && !a.imageUrl.startsWith('spDrive:/') ? a.imageUrl : '');
+  const role = getMyAppRole(a);
+  const roleBadge = role ? `<span class="app-role-badge ${role}">${role==='owner'?'Owner':'Co-Owner'}</span>` : '';
   return `<div class="app-card${statusCls!=='active'?' status-'+statusCls:''}" draggable="true" data-app-id="${a.spId}" ondragstart="appDragStart(event)" ondragend="appDragEnd(event)" ondragover="appDragOver(event)" ondrop="appDrop(event)" ondragenter="appDragEnter(event)" ondragleave="appDragLeave(event)">
     <div class="app-card-img card-bg-${ci}">
       <button class="app-card-star ${isFav?'favorited':''}" onclick="event.stopPropagation();toggleFav('${a.spId}')" title="${isFav?'Remove from Quick Access':'Add to Quick Access'}">
@@ -4845,6 +4828,7 @@ function renderAppCard(a){
       ${statusCls!=='active'?`<span class="app-status-badge ${statusCls}">${esc(a.status)}</span>`:''}
       ${imgSrc?`<img class="card-thumb" src="${esc(imgSrc)}" alt="${esc(a.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='';">`:''}
       <svg class="card-illustration" viewBox="0 0 80 80" ${imgSrc?'style="display:none;"':''}>${cardIllustration(a.category)}</svg>
+      ${roleBadge}
     </div>
     <div class="app-card-body" onclick="openApp('${a.spId}')" style="cursor:pointer;">
       <div class="app-card-cat ${catClass}">${esc(a.category).toUpperCase()}</div>
