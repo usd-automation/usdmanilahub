@@ -1570,7 +1570,7 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--b
       <input type="hidden" id="editAppSpId">
       <div class="form-group"><label>Application Name *</label><input type="text" id="appName" placeholder="e.g. SmartMeet"></div>
       <div class="form-group"><label>Description</label><textarea id="appDesc" placeholder="Brief description..."></textarea></div>
-      <div class="form-group"><label>Category *</label><select id="appCategory"><option value="">Select a category</option></select></div>
+      <div class="form-group"><label>Category *</label><select id="appCategory" onchange="showCatHint()"><option value="">Select a category</option></select><div id="appCategoryHint" style="margin-top:6px;font-size:11px;line-height:1.45;color:var(--text-muted);padding:6px 10px;background:var(--primary-light,#F5F3FF);border-radius:8px;display:none;"></div></div>
       <div class="form-group"><label>URL</label><input type="url" id="appUrl" placeholder="https://..."></div>
       <div class="form-group"><label>App Image</label>
         <div class="app-img-upload" id="appImgUpload" onclick="document.getElementById('appImgFile').click()">
@@ -4703,6 +4703,21 @@ const CAT_DESCRIPTIONS = {
   'Games': 'Recreational or gamified applications — team-building activities, quizzes, and engagement tools.',
 };
 
+/* ── Show category description hint below the dropdown in Add/Edit modal ── */
+function showCatHint() {
+  const sel = document.getElementById('appCategory');
+  const hint = document.getElementById('appCategoryHint');
+  if (!sel || !hint) return;
+  const desc = CAT_DESCRIPTIONS[sel.value];
+  if (desc) {
+    hint.textContent = desc;
+    hint.style.display = '';
+  } else {
+    hint.textContent = '';
+    hint.style.display = 'none';
+  }
+}
+
 /* ── "My Apps" tab logic ── */
 function getMyApps() {
   const myEmail = (currentUser && currentUser.email || '').toLowerCase();
@@ -5412,6 +5427,7 @@ function editApp(spId){
     document.getElementById('appName').value=a.name;
     document.getElementById('appDesc').value=a.desc||'';
     document.getElementById('appCategory').value=a.category;
+    showCatHint();
     document.getElementById('appUrl').value=a.url||'';
     document.getElementById('appStatus').value=a.status;
     document.getElementById('appAudience').value=a.audience||'Everyone';
@@ -5445,7 +5461,7 @@ async function deleteApp(spId){
 function resetAppForm(){
   document.getElementById('editAppSpId').value='';
   document.getElementById('appName').value='';document.getElementById('appDesc').value='';
-  document.getElementById('appCategory').value='';document.getElementById('appUrl').value='';
+  document.getElementById('appCategory').value='';showCatHint();document.getElementById('appUrl').value='';
   document.getElementById('appStatus').value='Active';
   document.getElementById('appAudience').value='Everyone';
   document.getElementById('appModalTitle').textContent='Add Application';
