@@ -70,6 +70,37 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--b
 .toast.success{background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;}
 .toast.info{background:#E3F2FD;color:#1565C0;border:1px solid #BBDEFB;}
 .toast.warning{background:#FFF8E1;color:#E65100;border:1px solid #FFCC80;}
+/* ── My Apps & Category Guide panels ── */
+.apps-panel{margin:0 0 18px;border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden;transition:box-shadow 0.2s;}
+.apps-panel:hover{box-shadow:0 2px 12px rgba(0,0,0,0.04);}
+.apps-panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;cursor:pointer;user-select:none;gap:10px;transition:background 0.15s;}
+.apps-panel-header:hover{background:var(--primary-light,#F5F3FF);}
+.apps-panel-header h4{margin:0;font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;}
+.apps-panel-header .panel-count{font-size:11px;font-weight:600;background:var(--primary,#7C5CCC);color:#FFF;padding:1px 8px;border-radius:10px;min-width:18px;text-align:center;}
+.apps-panel-header .panel-chevron{transition:transform 0.25s ease;color:var(--text-muted);font-size:16px;}
+.apps-panel-header .panel-chevron.open{transform:rotate(180deg);}
+.apps-panel-body{display:none;padding:0 18px 16px;animation:panelSlideIn 0.2s ease;}
+.apps-panel-body.open{display:block;}
+@keyframes panelSlideIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+/* My Apps mini cards */
+.my-app-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;border:1px solid var(--border);margin-bottom:8px;transition:background 0.15s,border-color 0.15s;cursor:pointer;}
+.my-app-row:last-child{margin-bottom:0;}
+.my-app-row:hover{background:var(--primary-light,#F5F3FF);border-color:var(--primary,#7C5CCC);}
+.my-app-row .my-app-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;font-weight:800;color:#FFF;}
+.my-app-row .my-app-info{flex:1;min-width:0;}
+.my-app-row .my-app-name{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.my-app-row .my-app-meta{font-size:11px;color:var(--text-muted);display:flex;gap:8px;align-items:center;margin-top:2px;}
+.my-app-row .my-app-role{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:2px 8px;border-radius:6px;}
+.my-app-role.owner{background:#EDE9FE;color:#6B4DC7;}
+.my-app-role.co-owner{background:#E0F2FE;color:#0369A1;}
+/* Category guide */
+.cat-guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;}
+.cat-guide-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:10px;border:1px solid var(--border);transition:background 0.15s;}
+.cat-guide-item:hover{background:var(--primary-light,#F5F3FF);}
+.cat-guide-item .cg-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cat-guide-item .cg-icon svg{width:16px;height:16px;stroke:#FFF;}
+.cat-guide-item .cg-label{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.cat-guide-item .cg-desc{font-size:11px;color:var(--text-muted);line-height:1.45;}
 /* ── App status badge (shown on card image area) ── */
 .app-status-badge{position:absolute;top:8px;right:8px;padding:4px 10px;border-radius:20px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;z-index:2;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,0.18);}
 .app-status-badge.maintenance{background:#F59E0B;color:#FFFFFF;border:1.5px solid #D97706;text-shadow:0 1px 2px rgba(0,0,0,0.2);animation:pulse-badge 2.5s ease-in-out infinite;}
@@ -1399,6 +1430,32 @@ body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--b
           <div class="quick-access-row" id="quickAccessRow"></div>
         </div>
         <div class="category-tabs" id="categoryTabs"></div>
+
+        <!-- My Apps Panel (collapsible) -->
+        <div class="apps-panel" id="myAppsPanel" style="display:none;">
+          <div class="apps-panel-header" onclick="togglePanel('myApps')">
+            <h4>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              My Apps
+              <span class="panel-count" id="myAppsCount">0</span>
+            </h4>
+            <svg class="panel-chevron" id="myAppsChevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="apps-panel-body" id="myAppsBody"></div>
+        </div>
+
+        <!-- Category Guide Panel (collapsible) -->
+        <div class="apps-panel" id="catGuidePanel">
+          <div class="apps-panel-header" onclick="togglePanel('catGuide')">
+            <h4>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              Category Guide
+            </h4>
+            <svg class="panel-chevron" id="catGuideChevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="apps-panel-body" id="catGuideBody"></div>
+        </div>
+
         <div class="section-header">
           <h3>Applications</h3>
           <span class="section-count" id="appCount">0</span>
@@ -3004,7 +3061,7 @@ function render() {
   renderBanner();
   renderNavBadges();
   document.getElementById('toolbar').style.display = currentView==='apps' ? '' : 'none';
-  if (currentView==='apps') { renderQuickAccess(); renderCategoryTabs(); renderApps(); }
+  if (currentView==='apps') { renderQuickAccess(); renderCategoryTabs(); renderMyAppsPanel(); renderCatGuidePanel(); renderApps(); }
   if (currentView==='support') renderTickets();
 }
 
@@ -4646,6 +4703,88 @@ function renderCategoryTabs() {
   document.getElementById('categoryTabs').innerHTML = CATEGORIES.map(c=>
     `<button class="cat-tab ${c.key===activeCategory?'active':''}" onclick="setCategory('${c.key}')">${ICONS[c.icon]||''} ${c.label} <span class="tab-count">${counts[c.key]}</span></button>`
   ).join('');
+}
+
+/* ── Category descriptions (used by guide panel) ── */
+const CAT_DESCRIPTIONS = {
+  'Productivity Tools': 'Applications that help employees work more efficiently — task managers, office suites, automation tools, and workflow accelerators.',
+  'Analytics & Reporting': 'Dashboards, BI tools, and data visualization applications for generating reports, tracking KPIs, and analyzing performance.',
+  'Project Management': 'Tools for planning, tracking, and managing projects — timelines, milestones, resource allocation, and team coordination.',
+  'Operations': 'Applications supporting day-to-day business operations — process management, logistics, infrastructure monitoring, and workflows.',
+  'HR & People': 'Human resources tools — employee records, onboarding, performance reviews, org charts, and people management platforms.',
+  'Learning & Development': 'Training platforms, e-learning portals, certification trackers, and skill development resources.',
+  'WFM Application': 'Workforce Management tools — scheduling, shift planning, attendance tracking, capacity planning, and optimization.',
+  'Games': 'Recreational or gamified applications — team-building activities, quizzes, and engagement tools.',
+};
+
+/* ── Panel toggle state ── */
+const _panelState = { myApps: false, catGuide: false };
+
+function togglePanel(key) {
+  _panelState[key] = !_panelState[key];
+  const body = document.getElementById(key === 'myApps' ? 'myAppsBody' : 'catGuideBody');
+  const chev = document.getElementById(key === 'myApps' ? 'myAppsChevron' : 'catGuideChevron');
+  if (body) body.classList.toggle('open', _panelState[key]);
+  if (chev) chev.classList.toggle('open', _panelState[key]);
+}
+
+/* ── Render My Apps panel ── */
+function renderMyAppsPanel() {
+  const panel = document.getElementById('myAppsPanel');
+  const body = document.getElementById('myAppsBody');
+  const countEl = document.getElementById('myAppsCount');
+  if (!panel || !body || !currentUser) return;
+
+  const myEmail = (currentUser.email || '').toLowerCase();
+  if (!myEmail) { panel.style.display = 'none'; return; }
+
+  const myApps = spApps.filter(a => {
+    const isOwner = a.primaryOwner && a.primaryOwner.toLowerCase() === myEmail;
+    const isCoOwner = a.coOwners && a.coOwners.some(e => e.toLowerCase() === myEmail);
+    return isOwner || isCoOwner;
+  });
+
+  if (!myApps.length) { panel.style.display = 'none'; return; }
+  panel.style.display = '';
+  if (countEl) countEl.textContent = myApps.length;
+
+  const COLORS = ['#7C5CCC','#E67E22','#27AE60','#2980B9','#8E44AD','#00ACC1','#16A085','#E74C3C'];
+
+  body.innerHTML = myApps.map((a, i) => {
+    const isOwner = a.primaryOwner && a.primaryOwner.toLowerCase() === myEmail;
+    const bgColor = COLORS[i % COLORS.length];
+    const initials = a.name.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+    const statusTag = a.status && a.status !== 'Active'
+      ? ` <span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;background:${a.status==='Deprecated'?'#FEE2E2;color:#DC2626':'#FEF3C7;color:#D97706'}">${esc(a.status)}</span>`
+      : '';
+    return `<div class="my-app-row" onclick="openApp('${a.spId}')">
+      <div class="my-app-icon" style="background:${bgColor};">${initials}</div>
+      <div class="my-app-info">
+        <div class="my-app-name">${esc(a.name)}${statusTag}</div>
+        <div class="my-app-meta">
+          <span>${esc(a.category)}</span>
+        </div>
+      </div>
+      <span class="my-app-role ${isOwner ? 'owner' : 'co-owner'}">${isOwner ? 'Owner' : 'Co-Owner'}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ── Render Category Guide panel ── */
+function renderCatGuidePanel() {
+  const body = document.getElementById('catGuideBody');
+  if (!body) return;
+  body.innerHTML = '<div class="cat-guide-grid">' + CATEGORIES.filter(c => c.key !== 'All').map(c => {
+    const desc = CAT_DESCRIPTIONS[c.key] || '';
+    const iconSvg = ICONS[c.icon] || '';
+    return `<div class="cat-guide-item">
+      <div class="cg-icon" style="background:${c.color};">${iconSvg}</div>
+      <div>
+        <div class="cg-label">${esc(c.key)}</div>
+        <div class="cg-desc">${esc(desc)}</div>
+      </div>
+    </div>`;
+  }).join('') + '</div>';
 }
 
 function renderApps() {
